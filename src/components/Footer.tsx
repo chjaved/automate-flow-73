@@ -36,10 +36,10 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4">Services</h3>
             <ul className="space-y-2 text-muted-foreground">
-              <li><a href="#services" className="hover:text-primary transition-colors">Web Development</a></li>
-              <li><a href="#services" className="hover:text-primary transition-colors">AI Automation</a></li>
-              <li><a href="#services" className="hover:text-primary transition-colors">API Integration</a></li>
-              <li><a href="#services" className="hover:text-primary transition-colors">Consultation</a></li>
+              <li><a href="/services" className="hover:text-primary transition-colors">Web Development</a></li>
+              <li><a href="/services" className="hover:text-primary transition-colors">AI Automation</a></li>
+              <li><a href="/services" className="hover:text-primary transition-colors">API Integration</a></li>
+              <li><a href="/services" className="hover:text-primary transition-colors">Consultation</a></li>
             </ul>
           </div>
 
@@ -47,10 +47,10 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4">Company</h3>
             <ul className="space-y-2 text-muted-foreground">
-              <li><a href="#about" className="hover:text-primary transition-colors">About Us</a></li>
-              <li><a href="#work" className="hover:text-primary transition-colors">Case Studies</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Blog</a></li>
-              <li><a href="#contact" className="hover:text-primary transition-colors">Contact</a></li>
+              <li><a href="/about" className="hover:text-primary transition-colors">About Us</a></li>
+              <li><a href="/portfolio" className="hover:text-primary transition-colors">Portfolio</a></li>
+              <li><a href="/blog" className="hover:text-primary transition-colors">Blog</a></li>
+              <li><a href="/contact" className="hover:text-primary transition-colors">Contact</a></li>
             </ul>
           </div>
 

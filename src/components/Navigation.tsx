@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,10 +17,11 @@ const Navigation = () => {
   }, []);
 
   const navLinks = [
-    { name: "Services", href: "#services" },
-    { name: "Work", href: "#work" },
-    { name: "About", href: "#about" },
-    { name: "Contact", href: "#contact" },
+    { name: "Services", href: "/services" },
+    { name: "Portfolio", href: "/portfolio" },
+    { name: "About", href: "/about" },
+    { name: "Blog", href: "/blog" },
+    { name: "Contact", href: "/contact" },
   ];
 
   return (
@@ -29,21 +32,23 @@ const Navigation = () => {
     >
       <div className="max-w-7xl mx-auto container-padding">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <a href="#" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent" />
             <span className="font-bold text-xl">NextGen Automations</span>
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.name}
-                href={link.href}
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                to={link.href}
+                className={`text-muted-foreground hover:text-foreground transition-colors ${
+                  location.pathname === link.href ? "text-foreground font-medium" : ""
+                }`}
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
             <Button size="lg" className="hover-scale">
               Schedule a Call
@@ -63,14 +68,16 @@ const Navigation = () => {
         {isMobileMenuOpen && (
           <div className="md:hidden py-4 space-y-4 animate-fade-in">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.name}
-                href={link.href}
-                className="block py-2 text-muted-foreground hover:text-foreground transition-colors"
+                to={link.href}
+                className={`block py-2 text-muted-foreground hover:text-foreground transition-colors ${
+                  location.pathname === link.href ? "text-foreground font-medium" : ""
+                }`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
             <Button size="lg" className="w-full">
               Schedule a Call
