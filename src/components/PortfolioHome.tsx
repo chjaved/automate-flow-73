@@ -2,8 +2,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight } from "lucide-react";
-import { motion, useAnimation, useInView } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 const projects = [
   {
@@ -93,24 +92,25 @@ const projects = [
 ];
 
 const PortfolioHome = () => {
-  const scrollRef = useRef(null);
-  const controls = useAnimation();
-  const inView = useInView(scrollRef);
-
   useEffect(() => {
-    if (inView) {
-      controls.start({
-        x: ["0%", "-50%"],
-        transition: {
-          duration: 30,
-          ease: "linear",
-          repeat: Infinity,
-        },
-      });
-    } else {
-      controls.stop();
-    }
-  }, [controls, inView]);
+    // Add pause on hover via CSS (for SSR safety)
+    const style = document.createElement("style");
+    style.innerHTML = `
+      @keyframes scrollLoop {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+      }
+      .scroll-container {
+        display: flex;
+        width: max-content;
+        animation: scrollLoop 40s linear infinite;
+      }
+      .scroll-wrapper:hover .scroll-container {
+        animation-play-state: paused;
+      }
+    `;
+    document.head.appendChild(style);
+  }, []);
 
   return (
     <section id="portfolio" className="section-padding bg-secondary overflow-hidden">
@@ -125,28 +125,13 @@ const PortfolioHome = () => {
           </p>
         </div>
 
-        {/* Scrolling Container */}
-        <div className="relative w-full overflow-hidden" ref={scrollRef}>
-          <motion.div
-            animate={controls}
-            className="flex gap-6 w-max"
-            onMouseEnter={() => controls.stop()}
-            onMouseLeave={() =>
-              controls.start({
-                x: ["0%", "-50%"],
-                transition: {
-                  duration: 30,
-                  ease: "linear",
-                  repeat: Infinity,
-                },
-              })
-            }
-          >
-            {/* Duplicate projects to create a seamless loop */}
+        {/* Scrolling Projects Section */}
+        <div className="scroll-wrapper relative overflow-hidden">
+          <div className="scroll-container gap-6">
             {[...projects, ...projects].map((project, index) => (
               <Card
                 key={index}
-                className="min-w-[300px] md:min-w-[340px] hover-lift overflow-hidden group border-border bg-card"
+                className="min-w-[300px] md:min-w-[340px] hover-lift overflow-hidden group border-border bg-card mr-6"
               >
                 <div className="aspect-video bg-muted overflow-hidden">
                   <img
@@ -174,7 +159,7 @@ const PortfolioHome = () => {
                 </CardContent>
               </Card>
             ))}
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
