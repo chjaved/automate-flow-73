@@ -1,5 +1,9 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight } from "lucide-react";
+import { motion, useAnimation, useInView } from "framer-motion";
+import { useEffect, useRef } from "react";
 
 const projects = [
   {
@@ -89,8 +93,27 @@ const projects = [
 ];
 
 const PortfolioHome = () => {
+  const scrollRef = useRef(null);
+  const controls = useAnimation();
+  const inView = useInView(scrollRef);
+
+  useEffect(() => {
+    if (inView) {
+      controls.start({
+        x: ["0%", "-50%"],
+        transition: {
+          duration: 30,
+          ease: "linear",
+          repeat: Infinity,
+        },
+      });
+    } else {
+      controls.stop();
+    }
+  }, [controls, inView]);
+
   return (
-    <section id="portfolio" className="section-padding bg-secondary">
+    <section id="portfolio" className="section-padding bg-secondary overflow-hidden">
       <div className="max-w-7xl mx-auto container-padding">
         <div className="text-center mb-16 space-y-4">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground">
@@ -102,39 +125,56 @@ const PortfolioHome = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
-            <Card
-              key={index}
-              className="hover-lift overflow-hidden group border-border bg-card"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <div className="aspect-video bg-muted overflow-hidden">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-semibold mb-3 text-foreground">
-                  {project.title}
-                </h3>
-                <p className="text-muted-foreground mb-4">
-                  {project.description}
-                </p>
-                <a
-                  href={project.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center text-primary font-medium group-hover:gap-3 transition-all"
-                >
-                  View Project
-                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                </a>
-              </CardContent>
-            </Card>
-          ))}
+        {/* Scrolling Container */}
+        <div className="relative w-full overflow-hidden" ref={scrollRef}>
+          <motion.div
+            animate={controls}
+            className="flex gap-6 w-max"
+            onMouseEnter={() => controls.stop()}
+            onMouseLeave={() =>
+              controls.start({
+                x: ["0%", "-50%"],
+                transition: {
+                  duration: 30,
+                  ease: "linear",
+                  repeat: Infinity,
+                },
+              })
+            }
+          >
+            {/* Duplicate projects to create a seamless loop */}
+            {[...projects, ...projects].map((project, index) => (
+              <Card
+                key={index}
+                className="min-w-[300px] md:min-w-[340px] hover-lift overflow-hidden group border-border bg-card"
+              >
+                <div className="aspect-video bg-muted overflow-hidden">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-semibold mb-3 text-foreground">
+                    {project.title}
+                  </h3>
+                  <p className="text-muted-foreground mb-4">
+                    {project.description}
+                  </p>
+                  <a
+                    href={project.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center text-primary font-medium group-hover:gap-3 transition-all"
+                  >
+                    View Project
+                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </a>
+                </CardContent>
+              </Card>
+            ))}
+          </motion.div>
         </div>
       </div>
     </section>
