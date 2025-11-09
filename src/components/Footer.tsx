@@ -1,72 +1,73 @@
-import { Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
+import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-muted/50 border-t border-muted">
+    <footer className="bg-foreground text-background border-t border-border">
       <div className="max-w-7xl mx-auto container-padding py-12">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
-          <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent" />
-              <span className="font-bold text-lg">NextGen Automations</span>
+          <div className="lg:col-span-2">
+            <div className="mb-4">
+              <span className="font-bold text-xl">Spectrum</span>
             </div>
-            <p className="text-muted-foreground mb-4">
-              Transforming businesses with web and AI automation solutions.
+            <p className="text-background/70 mb-6 max-w-md">
+              Enhance your digital presence with mobile-optimized websites that work nonstop to grow your brand.
             </p>
-            <div className="flex gap-4">
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                <Facebook size={20} />
-              </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                <Twitter size={20} />
-              </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                <Linkedin size={20} />
-              </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                <Instagram size={20} />
-              </a>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h3 className="font-semibold mb-4">Quick Links</h3>
+            <ul className="space-y-2 text-background/70">
+              <li><Link to="/" className="hover:text-background transition-colors">Home</Link></li>
+              <li><Link to="/services" className="hover:text-background transition-colors">Services</Link></li>
+              <li><Link to="/portfolio" className="hover:text-background transition-colors">Our Work</Link></li>
+              <li><button onClick={() => {
+                const element = document.getElementById("contact");
+                if (element) element.scrollIntoView({ behavior: "smooth" });
+              }} className="hover:text-background transition-colors">Contact Us</button></li>
+            </ul>
+          </div>
+
+          {/* Newsletter */}
+          <div>
+            <h3 className="font-semibold mb-4">Subscribe to our newsletter</h3>
+            <p className="text-background/70 text-sm mb-4">
+              The latest news, articles, and resources, sent to your inbox weekly.
+            </p>
+            <div className="flex gap-2">
+              <Input 
+                placeholder="Enter your email" 
+                className="bg-background/10 border-background/20 text-background placeholder:text-background/50"
+              />
+              <Button variant="secondary">Subscribe</Button>
             </div>
-          </div>
-
-          {/* Services */}
-          <div>
-            <h3 className="font-semibold mb-4">Services</h3>
-            <ul className="space-y-2 text-muted-foreground">
-              <li><a href="/services" className="hover:text-primary transition-colors">Web Development</a></li>
-              <li><a href="/services" className="hover:text-primary transition-colors">AI Automation</a></li>
-              <li><a href="/services" className="hover:text-primary transition-colors">API Integration</a></li>
-              <li><a href="/services" className="hover:text-primary transition-colors">Consultation</a></li>
-            </ul>
-          </div>
-
-          {/* Company */}
-          <div>
-            <h3 className="font-semibold mb-4">Company</h3>
-            <ul className="space-y-2 text-muted-foreground">
-              <li><a href="/about" className="hover:text-primary transition-colors">About Us</a></li>
-              <li><a href="/portfolio" className="hover:text-primary transition-colors">Portfolio</a></li>
-              <li><a href="/blog" className="hover:text-primary transition-colors">Blog</a></li>
-              <li><a href="/contact" className="hover:text-primary transition-colors">Contact</a></li>
-            </ul>
-          </div>
-
-          {/* Legal */}
-          <div>
-            <h3 className="font-semibold mb-4">Legal</h3>
-            <ul className="space-y-2 text-muted-foreground">
-              <li><a href="#" className="hover:text-primary transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Cookie Policy</a></li>
-            </ul>
           </div>
         </div>
 
-        <div className="border-t border-muted pt-8 text-center text-muted-foreground text-sm">
-          <p>© {currentYear} NextGen Automations. All rights reserved.</p>
+        <div className="border-t border-background/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-background/70 text-sm">
+            Copyright {currentYear} © Spectrum - All Right Reserved.
+          </p>
+          <div className="flex gap-4">
+            <a href="#" className="text-background/70 hover:text-background transition-colors">
+              <Facebook size={20} />
+            </a>
+            <a href="#" className="text-background/70 hover:text-background transition-colors">
+              <Twitter size={20} />
+            </a>
+            <a href="#" className="text-background/70 hover:text-background transition-colors">
+              <Instagram size={20} />
+            </a>
+            <a href="#" className="text-background/70 hover:text-background transition-colors">
+              <Linkedin size={20} />
+            </a>
+          </div>
         </div>
       </div>
     </footer>

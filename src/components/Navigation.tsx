@@ -1,86 +1,102 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Menu, X, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
 
 const Navigation = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const location = useLocation();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const navLinks = [
-    { name: "Services", href: "/services" },
-    { name: "Portfolio", href: "/portfolio" },
-    { name: "About", href: "/about" },
-    { name: "Blog", href: "/blog" },
-    { name: "Contact", href: "/contact" },
-  ];
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+      setIsMenuOpen(false);
+    }
+  };
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-background/95 backdrop-blur-md shadow-md" : "bg-transparent"
-      }`}
-    >
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
       <div className="max-w-7xl mx-auto container-padding">
-        <div className="flex items-center justify-between h-16 md:h-20">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent" />
-            <span className="font-bold text-xl">NextGen Automations</span>
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <span className="font-bold text-lg">Spectrum</span>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.href}
-                className={`text-muted-foreground hover:text-foreground transition-colors ${
-                  location.pathname === link.href ? "text-foreground font-medium" : ""
-                }`}
-              >
-                {link.name}
-              </Link>
-            ))}
-            <Button size="lg" className="hover-scale">
-              Schedule a Call
+            <Link to="/" className="text-sm font-medium hover:text-primary transition-colors">
+              Home
+            </Link>
+            <Link to="/services" className="text-sm font-medium hover:text-primary transition-colors">
+              Services
+            </Link>
+            <Link to="/portfolio" className="text-sm font-medium hover:text-primary transition-colors">
+              Our Work
+            </Link>
+            <button 
+              onClick={() => scrollToSection("contact")}
+              className="text-sm font-medium hover:text-primary transition-colors"
+            >
+              Contact Us
+            </button>
+          </div>
+
+          {/* CTA Buttons */}
+          <div className="hidden md:flex items-center gap-4">
+            <Sun className="w-5 h-5 text-muted-foreground" />
+            <Button onClick={() => scrollToSection("contact")}>
+              Connect
             </Button>
           </div>
 
           {/* Mobile Menu Button */}
           <button
             className="md:hidden p-2"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
         {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden py-4 space-y-4 animate-fade-in">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.href}
-                className={`block py-2 text-muted-foreground hover:text-foreground transition-colors ${
-                  location.pathname === link.href ? "text-foreground font-medium" : ""
-                }`}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {link.name}
-              </Link>
-            ))}
-            <Button size="lg" className="w-full">
-              Schedule a Call
+        {isMenuOpen && (
+          <div className="md:hidden py-4 space-y-4">
+            <Link
+              to="/"
+              className="block py-2 text-base font-medium hover:text-primary transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Home
+            </Link>
+            <Link
+              to="/services"
+              className="block py-2 text-base font-medium hover:text-primary transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Services
+            </Link>
+            <Link
+              to="/portfolio"
+              className="block py-2 text-base font-medium hover:text-primary transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Our Work
+            </Link>
+            <button
+              onClick={() => scrollToSection("contact")}
+              className="block py-2 text-base font-medium hover:text-primary transition-colors w-full text-left"
+            >
+              Contact Us
+            </button>
+            <Button 
+              className="w-full" 
+              onClick={() => {
+                scrollToSection("contact");
+                setIsMenuOpen(false);
+              }}
+            >
+              Connect
             </Button>
           </div>
         )}
