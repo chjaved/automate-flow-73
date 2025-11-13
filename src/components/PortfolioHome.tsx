@@ -94,13 +94,13 @@ const PortfolioHome = () => {
               key={index}
               className="overflow-hidden group border-border bg-card"
             >
-              <div className="h-[400px] bg-muted overflow-hidden relative">
+              <div className="relative h-[400px] overflow-hidden bg-transparent">
                 <img
                   src={project.image}
                   alt={`${project.title} landing page screenshot`}
                   loading="lazy"
                   decoding="async"
-                  className="absolute top-0 left-0 w-full h-auto object-top will-change-transform group-hover:animate-scroll-down"
+                  className="block w-full h-auto object-top will-change-transform select-none group-hover:animate-scroll-down"
                 />
               </div>
               <CardContent className="p-5">
