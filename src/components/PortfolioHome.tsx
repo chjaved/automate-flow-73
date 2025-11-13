@@ -95,7 +95,7 @@ const PortfolioHome = () => {
               className="overflow-hidden group border-border bg-card"
             >
               <div className="h-[400px] bg-muted overflow-hidden relative">
-                <div className="absolute inset-0 group-hover:[animation:scroll-down_8s_linear_forwards]">
+                <div className="absolute inset-0 group-hover:animate-scroll-down">
                   <img
                     src={project.image}
                     alt={project.title}
