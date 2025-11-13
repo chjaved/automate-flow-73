@@ -108,4 +108,13 @@ All colors MUST be HSL.
   .container-padding {
     @apply px-4 md:px-6 lg:px-8;
   }
+
+  @keyframes scroll-down {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(calc(-100% + 400px));
+    }
+  }
 }
