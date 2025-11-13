@@ -2,7 +2,8 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight } from "lucide-react";
-import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 const projects = [
   {
@@ -92,74 +93,99 @@ const projects = [
 ];
 
 const PortfolioHome = () => {
-  useEffect(() => {
-    // Add pause on hover via CSS (for SSR safety)
-    const style = document.createElement("style");
-    style.innerHTML = `
-      @keyframes scrollLoop {
-        from { transform: translateX(0); }
-        to { transform: translateX(-50%); }
-      }
-      .scroll-container {
-        display: flex;
-        width: max-content;
-        animation: scrollLoop 40s linear infinite;
-      }
-      .scroll-wrapper:hover .scroll-container {
-        animation-play-state: paused;
-      }
-    `;
-    document.head.appendChild(style);
-  }, []);
+  const [currentPage, setCurrentPage] = useState(0);
+  const projectsPerPage = 3;
+  const totalPages = Math.ceil(projects.length / projectsPerPage);
+  
+  const displayedProjects = projects.slice(
+    currentPage * projectsPerPage,
+    (currentPage + 1) * projectsPerPage
+  );
 
   return (
-    <section id="portfolio" className="section-padding bg-secondary overflow-hidden">
+    <section id="portfolio" className="section-padding bg-secondary">
       <div className="max-w-7xl mx-auto container-padding">
-        <div className="text-center mb-16 space-y-4">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground">
+        <div className="text-center mb-12 space-y-3">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground">
             Our latest work
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Explore how we transform ideas into beautiful, high-performing
             websites that drive results.
           </p>
         </div>
 
-        {/* Scrolling Projects Section */}
-        <div className="scroll-wrapper relative overflow-hidden">
-          <div className="scroll-container gap-6">
-            {[...projects, ...projects].map((project, index) => (
-              <Card
+        {/* Grid of 3 Projects */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {displayedProjects.map((project, index) => (
+            <Card
+              key={index}
+              className="hover-lift overflow-hidden group border-border bg-card"
+            >
+              <div className="aspect-video bg-muted overflow-hidden">
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <CardContent className="p-5">
+                <h3 className="text-lg font-semibold mb-2 text-foreground">
+                  {project.title}
+                </h3>
+                <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                  {project.description}
+                </p>
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-primary font-medium text-sm group-hover:gap-2 transition-all"
+                >
+                  View Project
+                  <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                </a>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Pagination Dots */}
+        <div className="flex justify-center items-center gap-3">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setCurrentPage((prev) => Math.max(0, prev - 1))}
+            disabled={currentPage === 0}
+            className="h-8"
+          >
+            Previous
+          </Button>
+          
+          <div className="flex gap-2">
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <button
                 key={index}
-                className="min-w-[300px] md:min-w-[340px] hover-lift overflow-hidden group border-border bg-card mr-6"
-              >
-                <div className="aspect-video bg-muted overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-semibold mb-3 text-foreground">
-                    {project.title}
-                  </h3>
-                  <p className="text-muted-foreground mb-4">
-                    {project.description}
-                  </p>
-                  <a
-                    href={project.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center text-primary font-medium group-hover:gap-3 transition-all"
-                  >
-                    View Project
-                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                  </a>
-                </CardContent>
-              </Card>
+                onClick={() => setCurrentPage(index)}
+                className={`w-2 h-2 rounded-full transition-all ${
+                  currentPage === index
+                    ? "bg-primary w-6"
+                    : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                }`}
+                aria-label={`Go to page ${index + 1}`}
+              />
             ))}
           </div>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setCurrentPage((prev) => Math.min(totalPages - 1, prev + 1))}
+            disabled={currentPage === totalPages - 1}
+            className="h-8"
+          >
+            Next
+          </Button>
         </div>
       </div>
     </section>
